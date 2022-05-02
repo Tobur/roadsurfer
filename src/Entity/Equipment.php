@@ -17,9 +17,6 @@ class Equipment
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\ManyToOne(targetEntity: Station::class, inversedBy: 'equipment')]
-    private Station $station;
-
     #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: InventoryEquipment::class)]
     private InventoryEquipment $inventory;
 

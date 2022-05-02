@@ -21,10 +21,12 @@ class Order
     private ?\DateTimeInterface $rentalEndDate;
 
     #[ORM\ManyToOne(targetEntity: Station::class)]
+    #[ORM\JoinColumn(name:"station_start_id", referencedColumnName:"id", nullable:false)]
     private Station $stationStart;
 
     #[ORM\ManyToOne(targetEntity: Station::class)]
-    private Station $stationEnd;
+    #[ORM\JoinColumn(name:"station_end_id", referencedColumnName:"id", nullable:true)]
+    private ?Station $stationEnd;
 
     #[ORM\OneToMany(mappedBy: 'order',targetEntity: OrderEquipment::class)]
     private ArrayCollection $orderEquipments;

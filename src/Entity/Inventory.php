@@ -23,9 +23,6 @@ class Inventory
     #[ORM\ManyToOne(targetEntity: Station::class, inversedBy: 'station')]
     private ?Station $station;
 
-    #[ORM\Column(type: 'string', length: 50)]
-    private string $type;
-
     /**
      * @return int|null
      */

@@ -12,20 +12,17 @@ class Campervan
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
-
-    #[ORM\ManyToOne(targetEntity: Station::class, inversedBy: 'compervans')]
-    private Station $station;
+    private ?string $name;
 
     #[ORM\OneToMany(mappedBy: 'compervan', targetEntity: InventoryCampervan::class)]
-    private InventoryCampervan $inventory;
+    private ArrayCollection $inventories;
 
     public function __construct()
     {
-        $this->inventory = new ArrayCollection();
+        $this->inventories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -41,6 +38,28 @@ class Campervan
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getInventories(): ArrayCollection
+    {
+        return $this->inventories;
+    }
+
+    /**
+     * @param  InventoryCampervan  $inventory
+     * @return $this
+     */
+    public function addInventory(InventoryCampervan $inventory): self
+    {
+        if (!$this->inventories->contains($inventory)) {
+            $this->inventories[] = $inventory;
+            $inventory->setCompervan($this);
+        }
 
         return $this;
     }

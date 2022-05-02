@@ -7,24 +7,24 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class InventoryCampervan extends Inventory
 {
-    #[ORM\ManyToOne(targetEntity: Campervan::class, inversedBy: 'inventory')]
-    private ?Campervan $compervan;
+    #[ORM\ManyToOne(targetEntity: Campervan::class, inversedBy: 'inventories')]
+    private ?Campervan $campervan;
 
     /**
      * @return Campervan|null
      */
-    public function getCompervan(): ?Campervan
+    public function getCampervan(): ?Campervan
     {
         return $this->compervan;
     }
 
     /**
-     * @param  Campervan|null  $compervan
+     * @param  Campervan|null  $campervan
      * @return InventoryCampervan
      */
-    public function setCompervan(?Campervan $compervan): InventoryCampervan
+    public function setCampervan(?Campervan $campervan): InventoryCampervan
     {
-        $this->compervan = $compervan;
+        $this->compervan = $campervan;
 
         return $this;
     }

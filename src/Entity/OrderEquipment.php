@@ -15,13 +15,15 @@ class OrderEquipment
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\OneToMany(mappedBy: 'orderEquipment', targetEntity: InventoryEquipment::class)]
+    #[ORM\ManyToOne(targetEntity: InventoryEquipment::class, inversedBy: 'orderEquipments')]
+    #[ORM\JoinColumn(name:"inventory_id", referencedColumnName:"id", nullable:false)]
     private $inventory;
 
     #[ORM\Column(type: 'integer')]
-    private $amount;
+    private int $amount;
 
-    #[ORM\ManyToOne(targetEntity: Order::class,inversedBy: 'orderEquipments')]
+    #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'orderEquipments')]
+    #[ORM\JoinColumn(name:"order_id", referencedColumnName:"id", nullable:false)]
     private Order $order;
 
     public function __construct()

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -10,11 +11,13 @@ class InventoryEquipment extends Inventory
     #[ORM\ManyToOne(targetEntity: Equipment::class, inversedBy: 'inventory')]
     private ?Equipment $equipment;
 
-    private $orderEquipment;
+    #[ORM\OneToMany(mappedBy: 'inventory', targetEntity: OrderEquipment::class)]
+    private ArrayCollection $orderEquipments;
+
     /**
      * @return Equipment|null
      */
-    public function getEquipment(): ?Equipment
+    public function getEquipments(): ?Equipment
     {
         return $this->equipment;
     }
