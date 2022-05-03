@@ -16,7 +16,7 @@ class OrderEquipment
     private $id;
 
     #[ORM\ManyToOne(targetEntity: InventoryEquipment::class, inversedBy: 'orderEquipments')]
-    #[ORM\JoinColumn(name:"inventory_id", referencedColumnName:"id", nullable:false)]
+    #[ORM\JoinColumn(name:"equipment_inventory_id", referencedColumnName:"id", nullable:false)]
     private $inventory;
 
     #[ORM\Column(type: 'integer')]

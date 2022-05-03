@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\OrderStatus;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,6 +31,12 @@ class Order
 
     #[ORM\OneToMany(mappedBy: 'order',targetEntity: OrderEquipment::class)]
     private ArrayCollection $orderEquipments;
+
+    #[ORM\Column(type: 'string', nullable: false, enumType: OrderStatus::class)]
+    private ?string $status;
+
+    #[ORM\ManyToOne(targetEntity: InventoryCampervan::class, inversedBy: 'orders')]
+    private InventoryCampervan $campervanInventory;
 
     public function getId(): ?int
     {
