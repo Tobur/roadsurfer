@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class InventoryEquipment extends Inventory
 {
-    #[ORM\ManyToOne(targetEntity: Equipment::class, inversedBy: 'inventory')]
+    #[ORM\ManyToOne(targetEntity: Equipment::class, inversedBy: 'inventories')]
     private ?Equipment $equipment;
 
     #[ORM\OneToMany(mappedBy: 'inventory', targetEntity: OrderEquipment::class)]

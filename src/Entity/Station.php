@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\StationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StationRepository::class)]
@@ -18,14 +19,15 @@ class Station
     private ?string $name;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: Campervan::class)]
-    private ArrayCollection $campervans;
+    private Collection $campervans;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: InventoryCampervan::class)]
-    private ArrayCollection $inventories;
+    private Collection $inventories;
 
     public function __construct()
     {
         $this->campervans = new ArrayCollection();
+        $this->inventories = new ArrayCollection();
     }
 
     public function getId(): ?int

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -12,7 +13,7 @@ class InventoryCampervan extends Inventory
     private ?Campervan $campervan;
 
     #[ORM\OneToMany(mappedBy: 'campervanInventory', targetEntity: Order::class)]
-    private ArrayCollection $orders;
+    private Collection $orders;
 
     public function __construct()
     {
@@ -32,7 +33,7 @@ class InventoryCampervan extends Inventory
      */
     public function getCampervan(): ?Campervan
     {
-        return $this->compervan;
+        return $this->campervan;
     }
 
     /**
@@ -41,7 +42,7 @@ class InventoryCampervan extends Inventory
      */
     public function setCampervan(?Campervan $campervan): InventoryCampervan
     {
-        $this->compervan = $campervan;
+        $this->campervan = $campervan;
 
         return $this;
     }

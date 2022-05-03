@@ -17,7 +17,7 @@ class Inventory
     #[ORM\Column(type: 'integer')]
     private int $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
     private ?string $sku;
 
     #[ORM\ManyToOne(targetEntity: Station::class, inversedBy: 'station')]

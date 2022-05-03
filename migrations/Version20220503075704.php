@@ -29,7 +29,6 @@ final class Version20220503075704 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE "order" DROP CONSTRAINT FK_F529939811E4FBBB');
         $this->addSql('DROP INDEX IDX_F529939811E4FBBB');
         $this->addSql('ALTER TABLE "order" DROP campervan_inventory_id');

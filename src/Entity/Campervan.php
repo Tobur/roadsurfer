@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CampervanRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CampervanRepository::class)]
@@ -17,8 +18,8 @@ class Campervan
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
 
-    #[ORM\OneToMany(mappedBy: 'compervan', targetEntity: InventoryCampervan::class)]
-    private ArrayCollection $inventories;
+    #[ORM\OneToMany(mappedBy: 'campervan', targetEntity: InventoryCampervan::class)]
+    private Collection $inventories;
 
     public function __construct()
     {
@@ -58,7 +59,7 @@ class Campervan
     {
         if (!$this->inventories->contains($inventory)) {
             $this->inventories[] = $inventory;
-            $inventory->setCompervan($this);
+            $inventory->setCampervan($this);
         }
 
         return $this;
