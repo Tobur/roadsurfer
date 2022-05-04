@@ -19,11 +19,11 @@ class InventoryEquipmentFixture extends BaseFixture implements DependentFixtureI
         for ($i = 0; $i <= 150; $i++) {
             $equipmentInventory = new InventoryEquipment();
             $equipmentInventory->setSku($this->faker->ipv6);
-            $equipmentNumber = rand(1, 10);
+            $equipmentNumber = rand(0, 10);
             /** @var Equipment $equipmentInventory */
             $equipment = $this->getReference("$equipmentNumber-equipment");
             $equipment->addInventory($equipmentInventory);
-            $stationNumber = rand(1, 10);
+            $stationNumber = rand(0, 10);
             $equipmentInventory->setStation($this->getReference("$stationNumber-station"));
             $manager->persist($equipmentInventory);
             $this->addReference("$i-inventoryEquipment", $equipmentInventory);

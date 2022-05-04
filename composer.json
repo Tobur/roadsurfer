@@ -86,6 +86,12 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "fzaninotto/faker": "^1.5",
-        "symfony/maker-bundle": "^1.40"
+        "justinrainbow/json-schema": "^5.2",
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "6.0.*",
+        "symfony/css-selector": "6.0.*",
+        "symfony/http-client": "6.0.*",
+        "symfony/maker-bundle": "^1.40",
+        "symfony/phpunit-bridge": "^6.0"
     }
 }

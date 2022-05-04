@@ -19,11 +19,11 @@ class InventoryCampervanFixture extends BaseFixture implements DependentFixtureI
         for ($i = 0; $i <= 150; $i++) {
             $campervanInventory = new InventoryCampervan();
             $campervanInventory->setSku($this->faker->localIpv4);
-            $campervanNumber = rand(1, 30);
+            $campervanNumber = rand(0, 30);
             /** @var Campervan $campervan */
             $campervan = $this->getReference("$campervanNumber-campervan");
             $campervan->addInventory($campervanInventory);
-            $stationNumber = rand(1, 10);
+            $stationNumber = rand(0, 10);
             $campervanInventory->setStation($this->getReference("$stationNumber-station"));
             $manager->persist($campervanInventory);
             $this->addReference("$i-inventoryCampervan", $campervanInventory);

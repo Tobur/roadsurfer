@@ -6,12 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Enum\OrderStatus;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiProperty;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
+#[ORM\Table(name: "orders")]
 #[ApiResource(
     denormalizationContext: ['groups' => ['write']],
     normalizationContext: ['groups' => ['read']],
@@ -47,7 +49,7 @@ class Order
 
     #[ORM\OneToMany(mappedBy: 'order',targetEntity: OrderEquipment::class)]
     #[Groups(["read", "write"])]
-    private ArrayCollection $orderEquipments;
+    private Collection $orderEquipments;
 
     #[ORM\Column(type: 'string', nullable: false, enumType: OrderStatus::class)]
     #[Groups(["read", "write"])]
@@ -72,6 +74,11 @@ class Order
     #[Groups(["read", "write"])]
     #[Assert\Length(max: 255)]
     private ?string $context;
+
+    public function __construct()
+    {
+        $this->orderEquipments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -141,18 +148,18 @@ class Order
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getOrderEquipments(): ArrayCollection
+    public function getOrderEquipments(): Collection
     {
         return $this->orderEquipments;
     }
 
     /**
-     * @param  ArrayCollection  $orderEquipments
+     * @param  Collection  $orderEquipments
      * @return Order
      */
-    public function setOrderEquipments(ArrayCollection $orderEquipments): Order
+    public function setOrderEquipments(Collection $orderEquipments): Order
     {
         $this->orderEquipments = $orderEquipments;
 
