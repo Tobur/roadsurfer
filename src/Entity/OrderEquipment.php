@@ -74,4 +74,23 @@ class OrderEquipment
 
         return $this;
     }
+
+    /**
+     * @return InventoryEquipment
+     */
+    public function getInventory(): InventoryEquipment
+    {
+        return $this->inventory;
+    }
+
+    /**
+     * @param  InventoryEquipment  $inventory
+     * @return OrderEquipment
+     */
+    public function setInventory(InventoryEquipment $inventory): OrderEquipment
+    {
+        $this->inventory = $inventory;
+
+        return $this;
+    }
 }

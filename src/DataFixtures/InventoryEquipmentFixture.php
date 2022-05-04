@@ -18,7 +18,7 @@ class InventoryEquipmentFixture extends BaseFixture implements DependentFixtureI
         parent::load($manager);
         for ($i = 0; $i <= 150; $i++) {
             $equipmentInventory = new InventoryEquipment();
-            $equipmentInventory->setSku($this->faker->ipv6);
+            $equipmentInventory->setSku($this->faker->unique()->ipv6);
             $equipmentNumber = rand(0, 10);
             /** @var Equipment $equipmentInventory */
             $equipment = $this->getReference("$equipmentNumber-equipment");
@@ -32,6 +32,9 @@ class InventoryEquipmentFixture extends BaseFixture implements DependentFixtureI
         $manager->flush();
     }
 
+    /**
+     * @return string[]
+     */
     public function getDependencies(): array
     {
         return [
