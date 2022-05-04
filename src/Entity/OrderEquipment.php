@@ -2,68 +2,46 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\OrderEquipmentRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderEquipmentRepository::class)]
+#[ApiResource(
+    denormalizationContext: ['groups' => ['write']],
+    normalizationContext: ['groups' => ['read']],
+)]
 class OrderEquipment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["read"])]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: InventoryEquipment::class, inversedBy: 'orderEquipments')]
     #[ORM\JoinColumn(name:"equipment_inventory_id", referencedColumnName:"id", nullable:false)]
-    private $inventory;
+    #[Groups(["read", "write"])]
+    #[Assert\NotBlank]
+    private InventoryEquipment $inventory;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(["read", "write"])]
+    #[Assert\NotBlank]
+    #[Assert\Positive]
     private int $amount;
 
     #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'orderEquipments')]
     #[ORM\JoinColumn(name:"order_id", referencedColumnName:"id", nullable:false)]
+    #[Groups(["read", "write"])]
+    #[Assert\NotBlank]
     private Order $order;
-
-    public function __construct()
-    {
-        $this->inventory = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection<int, InventoryCampervan>
-     */
-    public function getInventory(): Collection
-    {
-        return $this->inventory;
-    }
-
-    public function addInventory(InventoryCampervan $inventory): self
-    {
-        if (!$this->inventory->contains($inventory)) {
-            $this->inventory[] = $inventory;
-            $inventory->setOrderEquipment($this);
-        }
-
-        return $this;
-    }
-
-    public function removeInventory(InventoryCampervan $inventory): self
-    {
-        if ($this->inventory->removeElement($inventory)) {
-            // set the owning side to null (unless already changed)
-            if ($inventory->getOrderEquipment() === $this) {
-                $inventory->setOrderEquipment(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getAmount(): ?int

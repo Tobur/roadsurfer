@@ -5,6 +5,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\InventoryRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InventoryRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
@@ -15,12 +17,17 @@ class Inventory
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["read"])]
     private int $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
+    #[Assert\NotBlank]
+    #[Groups(["read", "write"])]
     private ?string $sku;
 
-    #[ORM\ManyToOne(targetEntity: Station::class, inversedBy: 'station')]
+    #[ORM\ManyToOne(targetEntity: Station::class, inversedBy: 'inventories')]
+    #[Assert\NotBlank]
+    #[Groups(["read", "write"])]
     private ?Station $station;
 
     /**

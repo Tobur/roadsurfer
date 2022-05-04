@@ -2,20 +2,31 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CampervanRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CampervanRepository::class)]
+#[ApiResource(
+    denormalizationContext: ['groups' => ['write']],
+    normalizationContext: ['groups' => ['read']],
+)]
 class Campervan
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["read"])]
     private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
+    #[Groups(["read", "write"])]
     private ?string $name;
 
     #[ORM\OneToMany(mappedBy: 'campervan', targetEntity: InventoryCampervan::class)]
@@ -44,9 +55,9 @@ class Campervan
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getInventories(): ArrayCollection
+    public function getInventories(): Collection
     {
         return $this->inventories;
     }

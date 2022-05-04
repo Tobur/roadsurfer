@@ -7,5 +7,6 @@ enum OrderStatus: string
     case PENDING = 'pending';
     case CREATED = 'created';
     case FINISHED = 'finished';
+    case CANCEL = 'cancel';
     case ERROR = 'error';
 }

@@ -2,41 +2,76 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Enum\OrderStatus;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiProperty;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
+#[ApiResource(
+    denormalizationContext: ['groups' => ['write']],
+    normalizationContext: ['groups' => ['read']],
+)]
 class Order
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["read"])]
     private $id;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(["read", "write"])]
+    #[Assert\NotBlank]
     private ?\DateTimeInterface $rentalStartDate;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(["read", "write"])]
+    #[Assert\NotBlank]
     private ?\DateTimeInterface $rentalEndDate;
 
     #[ORM\ManyToOne(targetEntity: Station::class)]
     #[ORM\JoinColumn(name:"station_start_id", referencedColumnName:"id", nullable:false)]
+    #[Groups(["read", "write"])]
+    #[Assert\NotBlank]
     private Station $stationStart;
 
     #[ORM\ManyToOne(targetEntity: Station::class)]
     #[ORM\JoinColumn(name:"station_end_id", referencedColumnName:"id", nullable:true)]
+    #[Groups(["read", "write"])]
     private ?Station $stationEnd;
 
     #[ORM\OneToMany(mappedBy: 'order',targetEntity: OrderEquipment::class)]
+    #[Groups(["read", "write"])]
     private ArrayCollection $orderEquipments;
 
     #[ORM\Column(type: 'string', nullable: false, enumType: OrderStatus::class)]
-    private ?string $status;
+    #[Groups(["read", "write"])]
+    #[ApiProperty(
+        attributes: [
+            "openapi_context" => [
+                "type" => "string",
+                "enum" => ['pending', 'created', 'finished', 'cancel', 'error'],
+                "example" => "pending",
+            ],
+        ],
+    )]
+    #[Assert\NotBlank]
+    #[Assert\Type(type: OrderStatus::class, message: 'Choose either pending, created, finished, cancel, error')]
+    private ?OrderStatus $status;
 
     #[ORM\ManyToOne(targetEntity: InventoryCampervan::class, inversedBy: 'orders')]
+    #[Groups(["read", "write"])]
     private InventoryCampervan $campervanInventory;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    #[Groups(["read", "write"])]
+    #[Assert\Length(max: 255)]
+    private ?string $context;
 
     public function getId(): ?int
     {
@@ -63,6 +98,101 @@ class Order
     public function setRentalEndDate(\DateTimeInterface $rentalEndDate): self
     {
         $this->rentalEndDate = $rentalEndDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Station
+     */
+    public function getStationStart(): Station
+    {
+        return $this->stationStart;
+    }
+
+    /**
+     * @param  Station  $stationStart
+     * @return Order
+     */
+    public function setStationStart(Station $stationStart): Order
+    {
+        $this->stationStart = $stationStart;
+
+        return $this;
+    }
+
+    /**
+     * @return Station|null
+     */
+    public function getStationEnd(): ?Station
+    {
+        return $this->stationEnd;
+    }
+
+    /**
+     * @param  Station|null  $stationEnd
+     * @return Order
+     */
+    public function setStationEnd(?Station $stationEnd): Order
+    {
+        $this->stationEnd = $stationEnd;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getOrderEquipments(): ArrayCollection
+    {
+        return $this->orderEquipments;
+    }
+
+    /**
+     * @param  ArrayCollection  $orderEquipments
+     * @return Order
+     */
+    public function setOrderEquipments(ArrayCollection $orderEquipments): Order
+    {
+        $this->orderEquipments = $orderEquipments;
+
+        return $this;
+    }
+
+    /**
+     * @return OrderStatus|null
+     */
+    public function getStatus(): null|OrderStatus
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param  OrderStatus  $status
+     * @return Order
+     */
+    public function setStatus(OrderStatus $status): Order
+    {
+        $this->status = $status;
+
+        return  $this;
+    }
+
+    /**
+     * @return InventoryCampervan
+     */
+    public function getCampervanInventory(): InventoryCampervan
+    {
+        return $this->campervanInventory;
+    }
+
+    /**
+     * @param  InventoryCampervan  $campervanInventory
+     * @return Order
+     */
+    public function setCampervanInventory(InventoryCampervan $campervanInventory): Order
+    {
+        $this->campervanInventory = $campervanInventory;
 
         return $this;
     }
