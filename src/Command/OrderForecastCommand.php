@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Entity\OrderForecast;
-use App\Repository\OrderRepository;
 use App\Service\OrderHistoricalForecast;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -13,10 +12,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'forecast-campervan',
+    name: 'order-forecast',
     description: 'Parse date and try to forecast need for this date.',
 )]
-class ForecastCampervanCommand extends Command
+class OrderForecastCommand extends Command
 {
     public function __construct(
         protected OrderHistoricalForecast $orderHistoricalForecast
@@ -58,7 +57,6 @@ class ForecastCampervanCommand extends Command
             $output->writeln(sprintf('Forecast %s number of campers', $orderForecast->getExpectedAmount()));
             $output->writeln('');
         }
-
 
         return Command::SUCCESS;
     }
