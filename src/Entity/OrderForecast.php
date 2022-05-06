@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\EquipmentOrderForecastRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\OrderForecastRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
-#[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap(['campervan' => CampervanOrderForecast::class, 'equipment' => EquipmentOrderForecast::class])]
-abstract class OrderForecast
+#[ORM\Entity(repositoryClass: OrderForecastRepository::class)]
+#[ApiResource(
+    collectionOperations: ['get'],
+    itemOperations: ['get'],
+)]
+#[ORM\UniqueConstraint(name:"date_and_station", columns:["rental_date", "station_id"])]
+class OrderForecast
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
-use App\Entity\CampervanOrderForecast;
 use App\Entity\OrderForecast;
+use App\Entity\Station;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,18 +18,18 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method OrderForecast[]    findAll()
  * @method OrderForecast[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CampervanOrderForecastRepository extends ServiceEntityRepository
+class OrderForecastRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CampervanOrderForecast::class);
+        parent::__construct($registry, OrderForecast::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(CampervanOrderForecast $entity, bool $flush = true): void
+    public function add(OrderForecast $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -40,13 +41,35 @@ class CampervanOrderForecastRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(CampervanOrderForecast $entity, bool $flush = true): void
+    public function remove(OrderForecast $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
             $this->_em->flush();
         }
     }
+
+    /**
+     * @param  \DateTime  $date
+     * @param  Station  $station
+     * @return OrderForecast|null
+     * @throws NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByDateAndStation(\DateTime $date, Station $station): ?OrderForecast
+    {
+        try {
+            return $this->createQueryBuilder('o')
+                ->where('o.rentalDate = :date')
+                ->andWhere('o.station = :stationId')
+                ->setParameter('date', $date->format('Y-m-d'))
+                ->setParameter('stationId', $station->getId())
+                ->getQuery()
+                ->getSingleResult();
+        } catch (NoResultException $noResultException) {
+            return null;
+        }
+     }
 
     /*
     public function findOneBySomeField($value): ?OrderForecast
