@@ -3,31 +3,32 @@
 namespace App\Repository;
 
 use App\Entity\InventoryCampervan;
+use App\Entity\InventoryEquipment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Inventory>
+ * @extends ServiceEntityRepository<InventoryEquipment>
  *
  * @method InventoryCampervan|null find($id, $lockMode = null, $lockVersion = null)
  * @method InventoryCampervan|null findOneBy(array $criteria, array $orderBy = null)
  * @method InventoryCampervan[]    findAll()
  * @method InventoryCampervan[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class InventoryRepository extends ServiceEntityRepository
+class InventoryEquipmentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, InventoryCampervan::class);
+        parent::__construct($registry, InventoryEquipment::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(InventoryCampervan $entity, bool $flush = true): void
+    public function add(InventoryEquipment $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -39,7 +40,7 @@ class InventoryRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(InventoryCampervan $entity, bool $flush = true): void
+    public function remove(InventoryEquipment $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {

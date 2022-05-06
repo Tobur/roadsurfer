@@ -32,9 +32,13 @@ class Campervan
     #[ORM\OneToMany(mappedBy: 'campervan', targetEntity: InventoryCampervan::class)]
     private Collection $inventories;
 
+    #[ORM\OneToMany(mappedBy: 'campervan', targetEntity: CampervanOrderForecast::class)]
+    private Collection $orderForecasts;
+
     public function __construct()
     {
         $this->inventories = new ArrayCollection();
+        $this->orderForecasts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -74,5 +78,13 @@ class Campervan
         }
 
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getOrderForecasts(): ArrayCollection|Collection
+    {
+        return $this->orderForecasts;
     }
 }

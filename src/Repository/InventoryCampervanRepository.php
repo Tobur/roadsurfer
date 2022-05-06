@@ -2,32 +2,32 @@
 
 namespace App\Repository;
 
-use App\Entity\InventoryType;
+use App\Entity\InventoryCampervan;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<InventoryType>
+ * @extends ServiceEntityRepository<InventoryCampervan>
  *
- * @method InventoryType|null find($id, $lockMode = null, $lockVersion = null)
- * @method InventoryType|null findOneBy(array $criteria, array $orderBy = null)
- * @method InventoryType[]    findAll()
- * @method InventoryType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method InventoryCampervan|null find($id, $lockMode = null, $lockVersion = null)
+ * @method InventoryCampervan|null findOneBy(array $criteria, array $orderBy = null)
+ * @method InventoryCampervan[]    findAll()
+ * @method InventoryCampervan[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class InventoryTypeRepository extends ServiceEntityRepository
+class InventoryCampervanRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, InventoryType::class);
+        parent::__construct($registry, InventoryCampervan::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(InventoryType $entity, bool $flush = true): void
+    public function add(InventoryCampervan $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -39,7 +39,7 @@ class InventoryTypeRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(InventoryType $entity, bool $flush = true): void
+    public function remove(InventoryCampervan $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -48,7 +48,7 @@ class InventoryTypeRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return InventoryType[] Returns an array of InventoryType objects
+    //  * @return Inventory[] Returns an array of Inventory objects
     //  */
     /*
     public function findByExampleField($value)
@@ -65,7 +65,7 @@ class InventoryTypeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?InventoryType
+    public function findOneBySomeField($value): ?Inventory
     {
         return $this->createQueryBuilder('i')
             ->andWhere('i.exampleField = :val')

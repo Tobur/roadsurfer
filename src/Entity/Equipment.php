@@ -32,9 +32,13 @@ class Equipment
     #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: InventoryEquipment::class)]
     private Collection $inventories;
 
+    #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: EquipmentOrderForecast::class)]
+    private Collection $orderForecasts;
+
     public function __construct()
     {
         $this->inventories = new ArrayCollection();
+        $this->orderForecasts = new ArrayCollection();
     }
 
     /**

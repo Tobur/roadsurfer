@@ -16,7 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Order[]    findAll()
  * @method Order[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class OrderRepository extends ServiceEntityRepository
+class EquipmentOrderRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -47,23 +47,22 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
-    public function countNumberOfOrdersForAllPeriod(\DateTimeInterface $date): mixed
+    // /**
+    //  * @return Order[] Returns an array of Order objects
+    //  */
+    /*
+    public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('orders')
-            ->select(
-                "CONCAT(EXTRACT(YEAR FROM orders.rentalStartDate), '-',".
-                " EXTRACT(MONTH FROM  orders.rentalStartDate)) as pattern, station.id as stationId,".
-                " COUNT(orders.id) as number"
-            )
-            ->join('orders.campervanInventory', 'inventories')
-            ->join('inventories.station', 'station')
-            ->where("CONCAT(EXTRACT(MONTH FROM orders.rentalStartDate), '-', ".
-                    "EXTRACT(DAY FROM  orders.rentalStartDate)) = :date")
-            ->setParameter('date', $date->format('n-j'))
-            ->groupBy('pattern')
-            ->addGroupBy('stationId')
-            ->getQuery()->getResult();
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('o.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
     }
+    */
 
     /*
     public function findOneBySomeField($value): ?Order

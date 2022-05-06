@@ -32,10 +32,14 @@ class Station
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: Inventory::class)]
     private Collection $inventories;
 
+    #[ORM\OneToMany(mappedBy: 'station', targetEntity: OrderForecast::class, orphanRemoval: true)]
+    private Collection $orderForecasts;
+
     public function __construct()
     {
         $this->equipmentInventories = new ArrayCollection();
         $this->campervanInventories = new ArrayCollection();
+        $this->orderForecasts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -51,6 +55,36 @@ class Station
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderForecast>
+     */
+    public function getOrderForecasts(): Collection
+    {
+        return $this->orderForecasts;
+    }
+
+    public function addOrderForecast(OrderForecast $orderForecast): self
+    {
+        if (!$this->orderForecasts->contains($orderForecast)) {
+            $this->orderForecasts[] = $orderForecast;
+            $orderForecast->setStation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderForecast(OrderForecast $orderForecast): self
+    {
+        if ($this->orderForecasts->removeElement($orderForecast)) {
+            // set the owning side to null (unless already changed)
+            if ($orderForecast->getStation() === $this) {
+                $orderForecast->setStation(null);
+            }
+        }
 
         return $this;
     }

@@ -4,15 +4,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\InventoryRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: InventoryRepository::class)]
+#[ORM\Entity]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(['campervan' => InventoryCampervan::class, 'equipment' => InventoryEquipment::class])]
-class Inventory
+abstract class Inventory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
